@@ -2,7 +2,14 @@
   <div id="nav">
     <!-- <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> -->
-    <h1>Account Information</h1>
+    <a-image
+      :src="require('@/assets/app-password-icon.png')"
+      alt=""
+      :height="50"
+      :width="100"
+    />
+    <!-- <a-avatar :src="require('@/assets/app-password-icon.png')" :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }" /> -->
+    <!-- <h1>Password Manager</h1> -->
   </div>
   <router-view />
 </template>
