@@ -21,10 +21,28 @@
           </a-input>
         </a-form-item>
         <a-form-item>
+          <a-input v-model:value="formState.email" placeholder="Email">
+            <template #prefix
+              ><MailOutlined style="color: rgba(0, 0, 0, 0.25)"
+            /></template>
+          </a-input>
+        </a-form-item>
+        <a-form-item>
           <a-input
             v-model:value="formState.password"
             type="password"
             placeholder="Password"
+          >
+            <template #prefix
+              ><LockOutlined style="color: rgba(0, 0, 0, 0.25)"
+            /></template>
+          </a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-input
+            v-model:value="formState.repassword"
+            type="password"
+            placeholder="Repassword"
           >
             <template #prefix
               ><LockOutlined style="color: rgba(0, 0, 0, 0.25)"
@@ -39,19 +57,23 @@
             block
             @click="handleSubmit"
           >
-            登录
+            注册
           </a-button>
         </a-form-item>
         <a-form-item>
-          没有Password Keeper?
-          <router-link to="/register">创建一个账户。</router-link>
+          已有Password Keeper?
+          <router-link to="/login">登录。</router-link>
         </a-form-item>
       </a-form>
     </a-col>
   </a-row>
 </template>
 <script lang="ts">
-import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
+import {
+  UserOutlined,
+  LockOutlined,
+  MailOutlined,
+} from "@ant-design/icons-vue";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
 import { defineComponent, reactive, UnwrapRef } from "vue";
 interface FormState {
@@ -62,7 +84,9 @@ export default defineComponent({
   setup() {
     const formState: UnwrapRef<FormState> = reactive({
       username: "",
+      email: "",
       password: "",
+      repassword: "",
     });
     const handleFinish = (values: FormState) => {
       // console.log(values, formState);
@@ -84,6 +108,7 @@ export default defineComponent({
   components: {
     UserOutlined,
     LockOutlined,
+    MailOutlined,
   },
 });
 </script>

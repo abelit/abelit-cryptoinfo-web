@@ -1,17 +1,20 @@
 <template>
-  <div id="nav">
-    <!-- <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> -->
-    <a-image
-      :src="require('@/assets/app-password-icon.png')"
-      alt=""
-      :height="50"
-      :width="100"
-    />
-    <!-- <a-avatar :src="require('@/assets/app-password-icon.png')" :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }" /> -->
-    <!-- <h1>Password Manager</h1> -->
-  </div>
-  <router-view />
+  <a-layout class="layout-panel">
+    <a-laout-header class="header-panel">
+      <a-image
+        :src="require('@/assets/app-password-keeper.png')"
+        alt=""
+        :width="150"
+        :height="50"
+      />
+    </a-laout-header>
+    <a-laout-content class="content-panel">
+      <router-view />
+    </a-laout-content>
+    <a-layout-footer class="footer-panel">
+      Password Keeper ©2022 Created by Abelit
+    </a-layout-footer>
+  </a-layout>
 </template>
 
 <style lang="less">
@@ -34,5 +37,23 @@
       color: #42b983;
     }
   }
+}
+.header-panel {
+  height: 60px;
+  background-color: #1276c7;
+  padding-top: 5px;
+}
+.layout-panel {
+  height: 100vh;
+}
+.content-panel {
+  height: 100%;
+  align-content: center;
+  justify-content: center;
+}
+.footer-panel {
+  height: 60px;
+  background-color: #1276c7;
+  text-align: center;
 }
 </style>
