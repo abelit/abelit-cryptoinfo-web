@@ -53,13 +53,17 @@
 <script lang="ts">
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
-import { defineComponent, reactive, UnwrapRef } from "vue";
+import { defineComponent, inject, reactive, UnwrapRef } from "vue";
 interface FormState {
   username: string;
   password: string;
 }
 export default defineComponent({
   setup() {
+    const axios: any = inject("axios"); // inject axios
+    // axios.defaults.baseURL = "http://localhost:8000";
+    // axios.defaults.withCredentials = true;
+
     const formState: UnwrapRef<FormState> = reactive({
       username: "",
       password: "",
@@ -71,8 +75,19 @@ export default defineComponent({
     const handleFinishFailed = (errors: ValidateErrorEntity<FormState>) => {
       console.log(errors);
     };
-    const handleSubmit = () => {
-      console.log(formState);
+    const handleSubmit = async () => {
+      // console.log(formState);
+      await axios
+        .post("http://localhost:8000/account/login", JSON.stringify(formState))
+        .then(
+          (res: any) => {
+            console.log(res);
+            console.log(res.headers);
+          },
+          (err: any) => {
+            console.log(err);
+          }
+        );
     };
     return {
       formState,
