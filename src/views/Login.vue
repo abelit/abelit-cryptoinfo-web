@@ -54,6 +54,7 @@
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
 import { defineComponent, inject, reactive, UnwrapRef } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 interface FormState {
   username: string;
@@ -62,6 +63,7 @@ interface FormState {
 export default defineComponent({
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     const formState: UnwrapRef<FormState> = reactive({
       username: "",
@@ -76,7 +78,9 @@ export default defineComponent({
     };
     const handleSubmit = async () => {
       alert("登录....");
-      store.dispatch("login", formState);
+      store.dispatch("login", formState).then(() => {
+        router.push("/");
+      });
     };
     return {
       formState,

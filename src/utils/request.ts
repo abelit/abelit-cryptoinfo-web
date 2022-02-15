@@ -21,6 +21,7 @@ interface AxiosRequestType {
   timeout?: number;
   value?: any;
   cancelToken?: any;
+  withCredentials?: boolean;
 }
 
 // 取消重复请求
@@ -41,15 +42,18 @@ let removeSource = (config: any) => {
 class AxiosHttpRequest implements BaseType {
   baseURL: string;
   timeout: number;
+  withCredentials: boolean;
   constructor() {
     this.baseURL = process.env.VUE_APP_BASE_API;
     this.timeout = 1500;
+    this.withCredentials = true;
   }
   // 配置参数
   getConfigParams() {
     const config = {
       baseURL: this.baseURL,
       timeout: this.timeout,
+      withCredentials: this.withCredentials,
       headers: {},
     };
     return config;
