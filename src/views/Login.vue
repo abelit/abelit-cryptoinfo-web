@@ -54,15 +54,14 @@
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
 import { defineComponent, inject, reactive, UnwrapRef } from "vue";
+import { useStore } from "vuex";
 interface FormState {
   username: string;
   password: string;
 }
 export default defineComponent({
   setup() {
-    const axios: any = inject("axios"); // inject axios
-    // axios.defaults.baseURL = "http://localhost:8000";
-    // axios.defaults.withCredentials = true;
+    const store = useStore();
 
     const formState: UnwrapRef<FormState> = reactive({
       username: "",
@@ -76,18 +75,8 @@ export default defineComponent({
       console.log(errors);
     };
     const handleSubmit = async () => {
-      // console.log(formState);
-      await axios
-        .post("http://localhost:8000/account/login", JSON.stringify(formState))
-        .then(
-          (res: any) => {
-            console.log(res);
-            console.log(res.headers);
-          },
-          (err: any) => {
-            console.log(err);
-          }
-        );
+      alert("登录....");
+      store.dispatch("login", formState);
     };
     return {
       formState,

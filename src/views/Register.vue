@@ -69,6 +69,7 @@
   </a-row>
 </template>
 <script lang="ts">
+import store from "@/store";
 import {
   UserOutlined,
   LockOutlined,
@@ -79,6 +80,8 @@ import { defineComponent, reactive, UnwrapRef } from "vue";
 interface FormState {
   username: string;
   password: string;
+  email: string;
+  repassword: string;
 }
 export default defineComponent({
   setup() {
@@ -96,7 +99,15 @@ export default defineComponent({
       console.log(errors);
     };
     const handleSubmit = () => {
-      console.log(formState);
+      if (formState.password !== formState.repassword) {
+        alert("两次输入的密码不一致");
+        return;
+      }
+      store.dispatch("register", {
+        username: formState.username,
+        password: formState.password,
+        email: formState.email,
+      });
     };
     return {
       formState,
