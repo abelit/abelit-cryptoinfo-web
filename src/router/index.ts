@@ -22,6 +22,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/Login.vue"),
   },
   {
+    path: "/auth-redirect",
+    name: "AuthRedirect",
+    component: () => import("../views/auth-redirect.vue"),
+  },
+  {
     path: "/register",
     name: "Register",
     component: () => import("../views/Register.vue"),

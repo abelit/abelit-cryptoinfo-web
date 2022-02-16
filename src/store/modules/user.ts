@@ -13,7 +13,7 @@ const user = {
   actions: {
     // 登录
     login({ commit }: any, userInfo: { username: any; password: any }) {
-      alert("hello action");
+      // alert("hello action");
       const { username, password } = userInfo;
       return new Promise<void>((resolve, reject) => {
         login({ username: username.trim(), password: password.trim() })

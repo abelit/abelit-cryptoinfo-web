@@ -77,10 +77,16 @@ export default defineComponent({
       console.log(errors);
     };
     const handleSubmit = async () => {
-      alert("登录....");
-      store.dispatch("login", formState).then(() => {
-        router.push("/");
-      });
+      // alert("登录....");
+      store
+        .dispatch("login", formState)
+        .then(() => {
+          alert("登录成功");
+          router.push("/");
+        })
+        .catch(() => {
+          alert("登录失败");
+        });
     };
     return {
       formState,

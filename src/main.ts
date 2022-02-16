@@ -6,7 +6,8 @@ import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css"; // or 'ant-design-vue/dist/antd.less'
 import axios from "axios";
 import VueAxios from "vue-axios";
-// import VueClipboard from "vue3-clipboard";
+import Cookies from "js-cookie";
+import "./permissions";
 
 const app = createApp(App);
 app
