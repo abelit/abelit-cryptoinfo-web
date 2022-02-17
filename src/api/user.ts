@@ -15,3 +15,18 @@ export function register(data: any) {
     data,
   });
 }
+
+export function getInfo(token: string) {
+  return http.request({
+    url: "/account/userinfo",
+    method: "get",
+    params: { token },
+  });
+}
+
+export function logout() {
+  return http.request({
+    url: "/account/logout",
+    method: "get",
+  });
+}

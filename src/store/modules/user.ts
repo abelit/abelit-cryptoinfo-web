@@ -1,5 +1,5 @@
-import { login, register } from "@/api/user";
-import { setToken } from "@/utils/auth";
+import { login, register, logout } from "@/api/user";
+import { setToken, removeToken } from "@/utils/auth";
 
 const user = {
   state: {
@@ -44,6 +44,20 @@ const user = {
             const { data } = response;
             // commit("SET_TOKEN", data.token);
             // setToken(data.token);
+            resolve();
+          })
+          .catch((error: any) => {
+            reject(error);
+          });
+      });
+    },
+    // 登出
+    logout({ commit }: any) {
+      return new Promise<void>((resolve, reject) => {
+        logout()
+          .then((response: any) => {
+            commit("SET_TOKEN", "");
+            removeToken();
             resolve();
           })
           .catch((error: any) => {
