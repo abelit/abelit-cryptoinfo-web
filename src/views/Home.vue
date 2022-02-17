@@ -21,10 +21,11 @@
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, ref, Ref } from "vue";
-import { inject } from "vue";
 import { BorderOutlined } from "@ant-design/icons-vue";
 import { copyText } from "vue3-clipboard";
 import { message } from "ant-design-vue";
+
+import { getAccountList, getAccountPassword } from "@/api/account";
 
 const columns = [
   { title: "ID", width: 50, dataIndex: "ID", key: "ID", fixed: "left" },
@@ -58,9 +59,6 @@ interface DataItem {
   // Desc: string;
 }
 
-const accountAPI = "http://localhost:8000/account/data";
-const passwordAPI = "http://localhost:8000/account/password";
-
 export default defineComponent({
   data() {
     return {
@@ -76,38 +74,29 @@ export default defineComponent({
     const recordID = ref<number>();
     let isPassDialog = ref(false);
     let password = ref<string>();
-    // const accounts = reactive<DataItem[]>([]);
     let accounts: Ref<DataItem[]> = ref([]);
-    const axios: any = inject("axios"); // inject axios
-
     const getList = async () => {
-      await axios.get(accountAPI).then((response: { data: any }) => {
-        // console.log(response.data);
-        accounts.value = response.data.data;
-        // console.log(accounts.value);
+      await getAccountList().then((res) => {
+        accounts.value = res.data;
       });
     };
     const getPassword = async () => {
-      // isPassDialog.value = false;
       let postData = {
         ID: recordID.value,
         Key: passwordKey.value,
       };
-      await axios
-        .post(passwordAPI, JSON.stringify(postData))
-        .then((response: any) => {
-          password.value = response.data.data[0].Password;
-          isPassDialog.value = false;
-          copyText(password.value, undefined, (error: any, _event: any) => {
-            if (error) {
-              message.error("Can not copy");
-              console.log(error);
-            } else {
-              message.success("Copied to clipboard");
-              // console.log(event)
-            }
-          });
+      await getAccountPassword(postData).then((res) => {
+        password.value = res.data[0].Password;
+        isPassDialog.value = false;
+        copyText(password.value, undefined, (error: any, _event: any) => {
+          if (error) {
+            message.error("Can not copy");
+            console.log(error);
+          } else {
+            message.success("Copied to clipboard");
+          }
         });
+      });
     };
 
     const getRecord = async (id: number) => {
@@ -117,7 +106,6 @@ export default defineComponent({
 
     onMounted(() => {
       getList();
-      // getRecord();
     });
 
     return {
