@@ -1,13 +1,18 @@
-import { login, register, logout } from "@/api/user";
+import { login, register, logout, getUserInfo } from "@/api/user";
 import { setToken, removeToken } from "@/utils/auth";
 
 const user = {
   state: {
     token: "",
+    userInfo: localStorage.getItem("userInfo") || "",
   },
   mutations: {
     SET_TOKEN: (state: any, token: string) => {
       state.token = token;
+    },
+    SET_USERINFO: (state: any, userInfo: any) => {
+      state.userInfo = JSON.stringify(userInfo);
+      localStorage.setItem("userInfo", state.userInfo);
     },
   },
   actions: {
@@ -57,7 +62,23 @@ const user = {
         logout()
           .then((response: any) => {
             commit("SET_TOKEN", "");
+            commit("SET_USERINFO", "");
             removeToken();
+            resolve();
+          })
+          .catch((error: any) => {
+            reject(error);
+          });
+      });
+    },
+    getUserInfo({ commit }: any) {
+      return new Promise<void>((resolve, reject) => {
+        getUserInfo()
+          .then((response: any) => {
+            const { data } = response;
+            // console.log(data);
+            // console.log(typeof data);
+            commit("SET_USERINFO", data);
             resolve();
           })
           .catch((error: any) => {

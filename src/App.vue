@@ -1,8 +1,8 @@
 <template>
   <a-layout class="layout-panel">
     <a-laout-header class="header-panel">
-      <a-row>
-        <a-col :span="6" :offset="9">
+      <a-row type="flex">
+        <a-col flex="auto">
           <a-image
             :src="require('@/assets/app-password-keeper.png')"
             alt=""
@@ -11,19 +11,18 @@
           />
         </a-col>
 
-        <a-col :span="2" :offset="7">
+        <a-col flex="100px">
           <a-dropdown class="app-profile">
             <template #overlay>
-              <a-menu @click="handleMenuClick">
+              <a-menu @click="handleLogout">
                 <a-menu-item key="profile"> Profile </a-menu-item>
                 <a-menu-item key="logout"> Logout </a-menu-item>
               </a-menu>
             </template>
             <a-button>
-              <!-- <span style="font-size: 18px; color: #fff">
-                {{ userInfo.username ? userInfo.username : "尚未登录" }}</span
-              >  -->
-              user
+              <span style="font-size: 18px; color: #fff">
+                {{ userInfo.UserName ? userInfo.UserName : "Nobody" }}</span
+              >
             </a-button>
           </a-dropdown>
         </a-col>
@@ -39,28 +38,38 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 export default defineComponent({
   setup() {
     const router = useRouter();
     const store = useStore();
-    const handleButtonClick = (e: Event) => {
-      console.log("click left button", e);
-    };
-    const handleMenuClick = (e: Event | any) => {
+
+    const userInfo = computed(() => {
+      console.log(store.getters.userInfo, "-------------------");
+      return store.getters.userInfo ? JSON.parse(store.getters.userInfo) : "";
+    });
+
+    // watch(userInfo,(newVal,oldVal)=>{
+    //   console.log(newVal,oldVal);
+    // },{immediate:true,deep:true});
+
+    const handleLogout = (e: Event | any) => {
       console.log("click", e);
       if (e.key === "logout") {
         store.dispatch("logout").then(() => {
           console.log("logout success");
           router.push("/#");
         });
+      } else if (e.key === "profile") {
+        console.log("profile");
+        console.log(userInfo.value);
       }
     };
     return {
-      handleButtonClick,
-      handleMenuClick,
+      handleLogout,
+      userInfo,
     };
   },
 });

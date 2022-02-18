@@ -150,7 +150,7 @@ class AxiosHttpRequest implements BaseType {
         }
         notification.error({
           message: message,
-          duration: 5 * 1000,
+          duration: 1 * 1000,
         });
         return Promise.reject(error);
       }

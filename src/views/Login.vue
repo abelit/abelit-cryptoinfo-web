@@ -53,6 +53,7 @@
 <script lang="ts">
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
+import notification from "ant-design-vue/es/notification";
 import { defineComponent, inject, reactive, UnwrapRef } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -81,11 +82,22 @@ export default defineComponent({
       store
         .dispatch("login", formState)
         .then(() => {
-          alert("登录成功");
-          router.push("/");
+          // alert("登录成功");
+          notification.success({
+            message: "登录成功",
+            description: "欢迎回来",
+          });
+          store.dispatch("getUserInfo").then(() => {
+            router.push("/");
+          });
         })
         .catch(() => {
-          alert("登录失败");
+          // alert("登录失败");
+          notification.error({
+            message: "登录失败",
+            description: "用户名或密码错误",
+            duration: 1 * 1000,
+          });
         });
     };
     return {

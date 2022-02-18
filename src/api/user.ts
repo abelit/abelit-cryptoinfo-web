@@ -16,11 +16,10 @@ export function register(data: any) {
   });
 }
 
-export function getInfo(token: string) {
+export function getUserInfo() {
   return http.request({
     url: "/account/userinfo",
     method: "get",
-    params: { token },
   });
 }
 
