@@ -6,7 +6,12 @@
   >
     <template #action="{ record }">
       <a-button type="primary" :size="size" @click="getRecord(record.ID)"
-        ><BorderOutlined
+        ><EditOutlined
+      /></a-button>
+    </template>
+    <template #copypassword="{ record }">
+      <a-button type="primary" :size="size" @click="getRecord(record.ID)"
+        ><CopyOutlined
       /></a-button>
     </template>
   </a-table>
@@ -21,20 +26,26 @@
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, ref, Ref } from "vue";
-import { BorderOutlined } from "@ant-design/icons-vue";
+import { EditOutlined, CopyOutlined } from "@ant-design/icons-vue";
 import { copyText } from "vue3-clipboard";
 import { message } from "ant-design-vue";
 
 import { getAccountList, getAccountPassword } from "@/api/account";
 
 const columns = [
-  { title: "ID", width: 50, dataIndex: "ID", key: "ID", fixed: "left" },
+  { title: "No.", width: 50, dataIndex: "No", key: "No", fixed: "left" },
   { title: "Name", width: 100, dataIndex: "Name", key: "Name", fixed: "left" },
   { title: "UserName", dataIndex: "UserName", key: "UserName", width: 150 },
   { title: "Email", dataIndex: "Email", key: "Email", width: 150 },
   { title: "Phone", dataIndex: "Phone", key: "Phone", width: 150 },
   { title: "URL", dataIndex: "URL", key: "URL", width: 250 },
-  { title: "Password", dataIndex: "Password", key: "Password", width: 100 },
+  {
+    title: "Password",
+    dataIndex: "Password",
+    key: "Password",
+    width: 100,
+    slots: { customRender: "copypassword" },
+  },
   { title: "GroupName", dataIndex: "GroupName", key: "GroupName", width: 150 },
   // { title: "Desc", dataIndex: "Desc", key: "Desc", width: 150 },
 
@@ -66,7 +77,8 @@ export default defineComponent({
     };
   },
   components: {
-    BorderOutlined,
+    EditOutlined,
+    CopyOutlined,
   },
   setup() {
     let size = ref("medium");
@@ -77,6 +89,9 @@ export default defineComponent({
     let accounts: Ref<DataItem[]> = ref([]);
     const getList = async () => {
       await getAccountList().then((res) => {
+        res.data.forEach((item: any, index: number) => {
+          item.No = index + 1;
+        });
         accounts.value = res.data;
       });
     };
