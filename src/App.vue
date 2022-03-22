@@ -11,7 +11,7 @@
           />
         </a-col>
 
-        <a-col flex="100px">
+        <a-col flex="100px" v-if="userInfo.UserName">
           <a-dropdown class="app-profile">
             <template #overlay>
               <a-menu @click="handleLogout">

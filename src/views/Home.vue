@@ -1,28 +1,40 @@
 <template>
-  <a-table
-    :columns="columns"
-    :data-source="accounts"
-    :scroll="{ x: 1500, y: 800 }"
-  >
-    <template #action="{ record }">
-      <a-button type="primary" :size="size" @click="getRecord(record.ID)"
-        ><EditOutlined
-      /></a-button>
-    </template>
-    <template #copypassword="{ record }">
-      <a-button type="primary" :size="size" @click="getRecord(record.ID)"
-        ><CopyOutlined
-      /></a-button>
-    </template>
-  </a-table>
+  <div>
+    <a-input-search
+      v-model:value="value"
+      placeholder="input search text"
+      enter-button
+      @search="onSearch"
+      style="max-width: 500px; margin: 30px 0px 20px 0px; margin-right: 30px"
+    />
+    <a-table
+      :columns="columns"
+      :data-source="accounts"
+      :scroll="{ x: 1500, y: 800 }"
+    >
+      <template #action="{ record }">
+        <a-button type="primary" :size="size" @click="getRecord(record.ID)"
+          ><EditOutlined
+        /></a-button>
+      </template>
+      <template #copypassword="{ record }">
+        <a-button type="primary" :size="size" @click="getRecord(record.ID)"
+          ><CopyOutlined
+        /></a-button>
+      </template>
+    </a-table>
 
-  <a-modal
-    v-model:visible="isPassDialog"
-    title="Encrypt Password Key"
-    @ok="getPassword"
-  >
-    <a-input-password v-model:value="passwordKey" placeholder="Password Key" />
-  </a-modal>
+    <a-modal
+      v-model:visible="isPassDialog"
+      title="Encrypt Password Key"
+      @ok="getPassword"
+    >
+      <a-input-password
+        v-model:value="passwordKey"
+        placeholder="Password Key"
+      />
+    </a-modal>
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, ref, Ref } from "vue";
@@ -87,6 +99,12 @@ export default defineComponent({
     let isPassDialog = ref(false);
     let password = ref<string>();
     let accounts: Ref<DataItem[]> = ref([]);
+    const value = ref<string>("");
+
+    const onSearch = (searchValue: string) => {
+      console.log("use value", searchValue);
+      console.log("or use this.value", value.value);
+    };
     const getList = async () => {
       await getAccountList().then((res) => {
         res.data.forEach((item: any, index: number) => {
@@ -131,6 +149,8 @@ export default defineComponent({
       getPassword,
       getList,
       getRecord,
+      onSearch,
+      value,
     };
   },
 });
